@@ -1,0 +1,16 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:cmf="http://namespaces.zope.org/cmf"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:five="http://namespaces.zope.org/five">
+
+  <include package=".browser" />
+
+  <configure zcml:condition="installed plone.supermodel">
+    <utility
+      component=".field.ComputedFieldHandler"
+      name="collective.computedfield.field.ComputedFieldHandler"
+      />
+  </configure>
+
+</configure>

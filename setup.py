@@ -25,11 +25,14 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
+        'plone.supermodel',
+        'plone.schemaeditor',
         'setuptools',
         'zope.component',
         'zope.schema',
-        'plone.supermodel',
-        'plone.schemaeditor'
+        'zope.i18nmessageid',
+        'Products.GenericSetup',
+        'z3c.form',
         # -*- Extra requirements: -*-
     ],
     entry_points="""

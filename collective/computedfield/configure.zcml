@@ -4,12 +4,21 @@
   xmlns:zcml="http://namespaces.zope.org/zcml"
   xmlns:five="http://namespaces.zope.org/five">
 
+  <include file="profiles.zcml" />
+
   <include package=".browser" />
 
   <configure zcml:condition="installed plone.supermodel">
     <utility
       component=".field.ComputedFieldHandler"
-      name="collective.computedfield.field.ComputedFieldHandler"
+      name="collective.computedfield.field.ComputedField"
+      />
+  </configure>
+
+  <configure zcml:condition="installed plone.schemaeditor">
+    <utility
+      name="collective.computedfield.field.ComputedField"
+      component=".field.ComputedFieldFactory"
       />
   </configure>
 

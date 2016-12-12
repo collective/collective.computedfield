@@ -2,6 +2,7 @@ from zope import schema
 from zope.component import queryAdapter
 from zope.interface import implements
 
+from collective.computedfield import ComputedFieldMessageFactory as _
 import functions
 from interfaces import IComputedField, IComputedValueFactory
 from utils import normalize_data
@@ -11,6 +12,12 @@ try:
     HAS_SUPERMODEL = True
 except ImportError:
     HAS_SUPERMODEL = False
+
+try:
+    from plone.schemaeditor.fields import FieldFactory
+    HAS_SCHEMAEDITOR = True
+except ImportError:
+    HAS_SCHEMAEDITOR = False
 
 
 class ComputedField(schema.Float):
@@ -29,7 +36,8 @@ class ComputedField(schema.Float):
             if isinstance(value, basestring):
                 value = value.strip()
             setattr(self, name, value)
-            del(kwargs[name])
+            if name in kwargs:
+                del(kwargs[name])
         self._factory = None
         super(ComputedField, self).__init__(*args, **kwargs)
 
@@ -52,3 +60,10 @@ class ComputedField(schema.Float):
 if HAS_SUPERMODEL:
     ComputedFieldHandler = BaseHandler(ComputedField)
 
+
+# plone.schemaeditor factory
+if HAS_SCHEMAEDITOR:
+    ComputedFieldFactory = FieldFactory(
+        ComputedField,
+        _(u'label_computed_field', default=u'Computed field'),
+        )

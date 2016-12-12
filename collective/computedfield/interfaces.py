@@ -1,6 +1,16 @@
 from zope import schema
-from zope.interface import Interface
+from zope.interface import Interface, implements
+from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+
+try:
+    from plone.schemaeditor.schema import IFloat
+except ImportError:
+    from zope.schema.interfaces import IFloat
+
+
+class IComputedFieldProductLayer(Interface):
+    """Marker interface for browser layer"""
 
 
 # computation stock function names;
@@ -18,7 +28,32 @@ FN_CHOICES = SimpleVocabulary(
     )
 
 
-class IComputedField(schema.interfaces.IFloat):
+class FieldChoiceBinder(object):
+    """Source binder for computed field choices of other fields"""
+
+    implements(IContextSourceBinder)
+
+    def __call__(self, context):
+        iface = context.interface
+        # other fields in the schema
+        fields = filter(
+            lambda field: field.__name__ != context.__name__,
+            list(zip(*schema.getFieldsInOrder(iface))[1]),
+            )
+        return SimpleVocabulary([
+            SimpleTerm(
+                field.__name__,
+                title=field.title
+                )
+            for field in fields
+            ])
+
+    def __contains__(self, value):
+        """Permissive containment hack for validation"""
+        return True
+
+
+class IComputedField(IFloat):
     """Computed field schema"""
 
     factory = schema.TextLine(
@@ -38,7 +73,12 @@ class IComputedField(schema.interfaces.IFloat):
         )
 
     fields = schema.List(
-        value_type=schema.TextLine(),
+        title=u'Field sources',
+        description=u'Choose fields used by function, in order.',
+        value_type=schema.Choice(
+            source=FieldChoiceBinder(),
+            ),
+        required=False,
         )
 
     def compute(context):

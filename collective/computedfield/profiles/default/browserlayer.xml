@@ -1,0 +1,8 @@
+<?xml version="1.0"?>    
+<layers> 
+  <layer
+    name="collective.computedfield"
+    interface="collective.computedfield.interfaces.IComputedFieldProductLayer"
+    />
+</layers>
+

@@ -3,4 +3,12 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="collective.computedfield">
 
+  <!-- resources -->
+
+  <browser:resourceDirectory
+    name="collective.computedfield"
+    directory="resources"
+    layer="collective.computedfield.interfaces.IComputedFieldProductLayer"
+    />
+
 </configure>

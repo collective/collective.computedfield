@@ -5,7 +5,7 @@ from zope.interface import implements
 from collective.computedfield import ComputedFieldMessageFactory as _
 import functions
 from interfaces import IComputedField, IComputedValueFactory
-from utils import normalize_data
+from utils import normalize_data, normalize_value
 
 try:
     from plone.supermodel.exportimport import BaseHandler
@@ -53,7 +53,12 @@ class ComputedField(schema.Float):
             if self._factory:
                 return self._factory(data)
         fn = getattr(functions, self.function)
-        return fn([data.get(field) for field in self.fields])
+        values = [data.get(name) for name in self.fields]
+        normalized_values = map(
+            lambda v: v if isinstance(v, float) else normalize_value(v),
+            values,
+            )
+        return fn(normalized_values)
 
 
 # plone.supermodel handler
@@ -67,3 +72,4 @@ if HAS_SCHEMAEDITOR:
         ComputedField,
         _(u'label_computed_field', default=u'Computed field'),
         )
+

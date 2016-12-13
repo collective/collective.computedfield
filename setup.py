@@ -33,6 +33,7 @@ setup(
         'zope.i18nmessageid',
         'Products.GenericSetup',
         'z3c.form',
+        'pytz',
         # -*- Extra requirements: -*-
     ],
     entry_points="""

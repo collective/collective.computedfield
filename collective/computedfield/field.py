@@ -73,3 +73,31 @@ if HAS_SCHEMAEDITOR:
         _(u'label_computed_field', default=u'Computed field'),
         )
 
+
+def computed_for_schema(schema):
+    """Return list of field names of computed fields for schema"""
+    fields = list(zip(*schema.getFieldsInOrder(schema))[1]).filter(
+        lambda field: isinstance(field, ComputedField)
+        )
+    return [f.__name__ for f in fields]
+
+
+def save_value(context, fieldname, value):
+    if hasattr(context, '__setitem__') and hasattr(context, '__delitem__'):
+        # looks like mapping, treat as such
+        context[fieldname] = value
+    else:
+        setattr(context, fieldname, value)
+
+
+def complete(context, schema):
+    """
+    Given context, schema; compute all ComputedField in schema
+    for context, save on context.
+    """
+    fields = computed_for_schema(schema)
+    for fieldname in fields:
+        field = schema[fieldname]
+        value = field.compute(context)
+        save_value(context, fieldname, value)
+

@@ -2,7 +2,17 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:cmf="http://namespaces.zope.org/cmf"
   xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:monkey="http://namespaces.plone.org/monkey"
   xmlns:five="http://namespaces.zope.org/five">
+
+  <include package="collective.monkeypatcher" />
+
+  <monkey:patch
+    description="Patch plone.autoform tagged values getter to ignore omitted fields for plone.schemaeditor listing, otherwise wrap original/normal behavior."
+    module="plone.autoform.utils"
+    original="mergedTaggedValuesForForm"
+    replacement=".patch.mergedTaggedValuesForForm"
+    />
 
   <include file="profiles.zcml" />
 

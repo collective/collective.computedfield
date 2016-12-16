@@ -34,6 +34,7 @@ setup(
         'Products.GenericSetup',
         'z3c.form',
         'pytz',
+        'collective.monkeypatcher',
         # -*- Extra requirements: -*-
     ],
     entry_points="""

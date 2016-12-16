@@ -1,3 +1,5 @@
+from plone.autoform.interfaces import OMITTED_KEY
+from z3c.form.interfaces import IEditForm
 from zope import schema
 from zope.component import queryAdapter
 from zope.interface import implements
@@ -40,6 +42,25 @@ class ComputedField(schema.Float):
                 del(kwargs[name])
         self._factory = None
         super(ComputedField, self).__init__(*args, **kwargs)
+
+    def hideFromInput(self):
+        """
+        Set plone.autoform omitted flag on schema tagged values for this
+        field.
+        Precondition: call only once self.interface and self.__name__
+        are both set.
+        """
+        omitted = self.interface.queryTaggedValue(OMITTED_KEY)
+        if omitted is None:
+            omitted = []
+            self.interface.setTaggedValue(OMITTED_KEY, omitted)
+        omitted.append((IEditForm, self.__name__, 'true'))
+
+    def __setattr__(self, name, value):
+        super(ComputedField, self).__setattr__(name, value)
+        if name in ('interface', '__name__'):
+            if self.__name__ and self.interface:
+                self.hideFromInput()
 
     def compute(self, context):
         data = normalize_data(context)

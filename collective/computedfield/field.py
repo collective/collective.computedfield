@@ -95,10 +95,11 @@ if HAS_SCHEMAEDITOR:
         )
 
 
-def computed_for_schema(schema):
+def computed_for_schema(iface):
     """Return list of field names of computed fields for schema"""
-    fields = list(zip(*schema.getFieldsInOrder(schema))[1]).filter(
-        lambda field: isinstance(field, ComputedField)
+    fields = filter(
+        lambda field: isinstance(field, ComputedField),
+        list(zip(*schema.getFieldsInOrder(iface))[1])
         )
     return [f.__name__ for f in fields]
 

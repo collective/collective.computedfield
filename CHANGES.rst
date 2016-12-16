@@ -4,6 +4,10 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Detection method in utils, has_computed_fields() determines if an
+  interface contains any computed fields.
+  [seanupton]
+
 - Omit ComputedField from edit forms, excepting (via monkey patch of
   plone.autoform) plone.schemaeditor listing.
   [seanupton]

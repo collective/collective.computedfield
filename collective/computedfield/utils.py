@@ -1,9 +1,11 @@
 import calendar
 import datetime
 import json
-import time
 
 import pytz
+from zope import schema
+
+from interfaces import IComputedField
 
 try:
     import persistent
@@ -100,4 +102,10 @@ def normalize_data(context):
     else:
         data = context
     return _dict(data)  # attrs as mapping
+
+
+def has_computed_fields(iface):
+    """Does schema have any computed fields, returns Bool"""
+    fields = zip(*schema.getFieldsInOrder(iface))[1]
+    return any([IComputedField.providedBy(field) for field in fields])
 

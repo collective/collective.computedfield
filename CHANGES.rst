@@ -4,6 +4,13 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Omit ComputedField from edit forms, excepting (via monkey patch of
+  plone.autoform) plone.schemaeditor listing.
+  [seanupton]
+
+- Completion methods for use by downstream callers.
+  [seanupton]
+
 - Tests for value and data normalization.
   [seanupton]
 

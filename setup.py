@@ -35,6 +35,7 @@ setup(
         'z3c.form',
         'pytz',
         'collective.monkeypatcher',
+        'plone.autoform',
         # -*- Extra requirements: -*-
     ],
     entry_points="""

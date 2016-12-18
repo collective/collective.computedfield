@@ -4,6 +4,9 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Make plone.autoform a dependency.
+  [seanupton]
+
 - Detection method in utils, has_computed_fields() determines if an
   interface contains any computed fields.
   [seanupton]

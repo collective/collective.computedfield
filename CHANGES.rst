@@ -4,6 +4,10 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Hide min/max from schemaeditor editing; move factory name to bottom of
+  form.
+  [seanupton]
+
 - Make plone.autoform a dependency.
   [seanupton]
 

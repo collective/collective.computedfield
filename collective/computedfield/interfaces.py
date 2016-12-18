@@ -1,5 +1,5 @@
 from zope import schema
-from zope.interface import Interface, implements
+from zope.interface import Attribute, Interface, implements
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
@@ -56,14 +56,9 @@ class FieldChoiceBinder(object):
 class IComputedField(IFloat):
     """Computed field schema"""
 
-    factory = schema.TextLine(
-        title=u'Factory name',
-        description=u'Name of factory function (registered adapter), which '
-                    u'given data context, will return computed value.  '
-                    u'A valid identifier here will override any stock '
-                    u'function chosen.',
-        required=False,
-        )
+    # override fields from plone.schemaeditor.schema.IFloat to hide these...
+    min = Attribute('min')
+    max = Attribute('max')
 
     function = schema.Choice(
         title=u'Function name',
@@ -78,6 +73,15 @@ class IComputedField(IFloat):
         value_type=schema.Choice(
             source=FieldChoiceBinder(),
             ),
+        required=False,
+        )
+
+    factory = schema.TextLine(
+        title=u'Factory name',
+        description=u'Name of factory function (registered adapter), which '
+                    u'given data context, will return computed value.  '
+                    u'A valid identifier here will override any stock '
+                    u'function chosen.',
         required=False,
         )
 

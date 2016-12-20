@@ -76,6 +76,14 @@ class IComputedField(IFloat):
         required=False,
         )
 
+    multiplier = schema.Float(
+        title=u'Constant multiplier',
+        description=u'A constant to multiply result with (e.g. 100 to '
+                    u'transform a ratio into a percentage). Defaults to 1.0',
+        required=False,
+        default=1.0,
+        )
+
     factory = schema.TextLine(
         title=u'Factory name',
         description=u'Name of factory function (registered adapter), which '

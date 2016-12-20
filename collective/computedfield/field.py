@@ -28,7 +28,7 @@ class ComputedField(schema.Float):
     implements(IComputedField)
 
     def __init__(self, *args, **kwargs):
-        for name in ('function', 'fields', 'factory'):
+        for name in ('function', 'fields', 'factory', 'multiplier'):
             value = kwargs.get(name)
             field = IComputedField[name]
             if value is None and field.required:
@@ -63,6 +63,7 @@ class ComputedField(schema.Float):
                 self.hideFromInput()
 
     def compute(self, context):
+        c = getattr(self, 'multiplier', 1.0)
         data = normalize_data(context)
         if self.factory:
             if self._factory is None:
@@ -79,7 +80,7 @@ class ComputedField(schema.Float):
             lambda v: v if isinstance(v, float) else normalize_value(v),
             values,
             )
-        return fn(normalized_values)
+        return c * fn(normalized_values)
 
 
 # plone.supermodel handler

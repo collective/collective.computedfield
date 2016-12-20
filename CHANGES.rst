@@ -4,6 +4,10 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Support a constant multipler for the purpose of allowing a ratio to be
+  expressed as a percentage.
+  [seanupton]
+
 - Hide min/max from schemaeditor editing; move factory name to bottom of
   form.
   [seanupton]

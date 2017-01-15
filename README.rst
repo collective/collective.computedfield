@@ -1,7 +1,7 @@
 Introduction
 ============
 
-collective.
+collective.computedfield is a package providing a zope.schema field type for computed values.
 
 Integration note
 ----------------

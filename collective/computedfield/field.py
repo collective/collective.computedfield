@@ -40,6 +40,7 @@ class ComputedField(schema.Float):
             setattr(self, name, value)
             if name in kwargs:
                 del(kwargs[name])
+        self._defaultConstant = IComputedField['multiplier'].default
         self._factory = None
         super(ComputedField, self).__init__(*args, **kwargs)
 
@@ -63,7 +64,9 @@ class ComputedField(schema.Float):
                 self.hideFromInput()
 
     def compute(self, context):
-        c = getattr(self, 'multiplier', 1.0)
+        c = getattr(self, 'multiplier', None)
+        if c is None:
+            c = self._defaultConstant
         data = normalize_data(context)
         if self.factory:
             if self._factory is None:

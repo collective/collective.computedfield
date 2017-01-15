@@ -4,6 +4,9 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Fix failure to default a non-filled-in constant multiplier.
+  [seanupton]
+
 - Support a constant multipler for the purpose of allowing a ratio to be
   expressed as a percentage.
   [seanupton]

@@ -1,3 +1,5 @@
+import datetime
+
 from plone.autoform.interfaces import OMITTED_KEY
 from z3c.form.interfaces import IEditForm
 from zope import schema
@@ -20,6 +22,17 @@ try:
     HAS_SCHEMAEDITOR = True
 except ImportError:
     HAS_SCHEMAEDITOR = False
+
+
+def usable_value(value):
+    if value is None:
+        return False
+    if isinstance(value, basestring) and value.strip() == '':
+        return False
+    return True
+
+
+is_date = lambda v: isinstance(v, datetime.date)
 
 
 class ComputedField(schema.Float):
@@ -79,10 +92,17 @@ class ComputedField(schema.Float):
                 return self._factory(data)
         fn = getattr(functions, self.function)
         values = [data.get(name) for name in self.fields]
-        normalized_values = map(
-            lambda v: v if isinstance(v, float) else normalize_value(v),
-            values,
+        normalized_values = filter(
+            usable_value,
+            map(
+                lambda v: v if isinstance(v, float) else normalize_value(v),
+                values,
+                )
             )
+        if fn is functions.ratio and not all(normalized_values[1:]):
+            return None  # avoid zero division
+        if any(map(is_date, values)) and len(normalized_values) < 2:
+            return None  # no date calculations on too-few values
         return c * fn(normalized_values)
 
 

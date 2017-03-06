@@ -4,6 +4,14 @@ Changelog
 0.1 (unreleased)
 ----------------
 
+- Filter out empty values in calculation, and in case of date fields,
+  if the number of arguments that are non-empty (not None) is less than
+  two, save None to computed field.
+  [seanupton]
+
+- Preempt any chance at division by zero in case of ratio function.
+  [seanupton]
+
 - Fix failure to default a non-filled-in constant multiplier.
   [seanupton]
 

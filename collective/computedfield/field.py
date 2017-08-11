@@ -144,6 +144,8 @@ def complete(context, schema):
     fields = computed_for_schema(schema)
     for fieldname in fields:
         field = schema[fieldname]
+        if not field.factory and not field.function:
+            continue
         value = field.compute(context)
         save_value(context, fieldname, value)
 

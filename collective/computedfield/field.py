@@ -68,7 +68,9 @@ class ComputedField(schema.Float):
         if omitted is None:
             omitted = []
             self.interface.setTaggedValue(OMITTED_KEY, omitted)
-        omitted.append((IEditForm, self.__name__, 'true'))
+        key = (IEditForm, self.__name__, 'true')
+        if key not in omitted:
+            omitted.append(key)
 
     def __setattr__(self, name, value):
         super(ComputedField, self).__setattr__(name, value)
